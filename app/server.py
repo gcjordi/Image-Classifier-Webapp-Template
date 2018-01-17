@@ -1,7 +1,7 @@
 import falcon
 from falcon_cors import CORS
 import json
-import time
+from nn import process_image
 from falcon_multipart.middleware import MultipartMiddleware
 
 
@@ -14,13 +14,15 @@ class Images(object):
     cors = public_cors
 
     def on_post(self, req, resp):
-        if req.content_length:
-            image = json.load(req.stream)
-            print('image recieved')
-            time.sleep(4)
-
-        resp.body = json.dumps({'resp_data': 'This is a response'})
-        resp.status = falcon.HTTP_200
+        try:
+            if req.content_length:
+                data = json.load(req.stream)
+                evaluation = process_image(data['image'])
+            resp.body = json.dumps({'resp_data': evaluation})
+            resp.status = falcon.HTTP_200
+        except Exception as e:
+            resp.status = falcon.HTTP_204
+            print(str(e))
 
 
 app.add_route('/', Images())

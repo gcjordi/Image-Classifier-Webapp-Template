@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import {Card, CardActions, CardMedia, CardTitle} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import Snackbar from 'material-ui/Snackbar';
 import LinearProgress from 'material-ui/LinearProgress';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
@@ -24,27 +25,32 @@ const styles = {
 class App extends Component {
 
   constructor() {
-        super();
-        this.state = {
-          loading:false,
-          image:null,
-          resp_img:null,
-          preview:null,
-        }
+      super();
+      this.state = {
+        loading:false,
+        snackbar:false,
+        image:null,
+        prediction:'Upload an image to see what it holds',
+        preview:null,
       }
+    }
   
   selectImage(id) {
-        let t = this;
-        var reader = new FileReader();
-        reader.readAsDataURL(id.target.files[0]);
-        // var yoyoimage = id.target.files[0];
-        // var yoyoname = yoyoimage.name;
-        reader.onload = function(el) {
-            var imagedata = el.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-            t.setState({image:imagedata,
-                        preview: el.target.result})
-        }
+      let t = this;
+      var reader = new FileReader();
+      reader.readAsDataURL(id.target.files[0]);
+      // var yoyoimage = id.target.files[0];
+      // var yoyoname = yoyoimage.name;
+      reader.onload = function(el) {
+          var imagedata = el.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+          t.setState({image:imagedata,
+                      preview: el.target.result})
+      }
     }
+
+  closeSnackbar(){
+    this.setState({snackbar:false})
+  }
 
   sendImage(){
     this.setState({loading:true})
@@ -53,9 +59,14 @@ class App extends Component {
       {method: 'POST',
        body: JSON.stringify({ image: t.state.image }),
       }).then(function(resp){
-       return resp.json();
+
+        if(resp.status === 200)
+          {return resp.json()}
+        else
+          t.setState({loading: false,
+                      snackbar: true,})
       }).then((body)=>{
-        t.setState({resp_img: body.resp_data,
+        t.setState({prediction: body.resp_data,
                     loading: false})
       })
   }
@@ -63,27 +74,32 @@ class App extends Component {
   render() {
     return (
       <MuiThemeProvider>
-          <div>
-          <Card>
-            <CardMedia >
-              <img src={this.state.preview} alt=""/>
-            </CardMedia>
-            <CardTitle title="Classifier"/>
-            <CardActions>
-              <FlatButton
-              style={styles.uploadButton}
-              primary={true}
-              label="Choose an Image"
-              containerElement="label">
-              <input style={styles.exampleImageInput}  type="file" accept="image/*" onChange={this.selectImage.bind(this)} />
-            </FlatButton>
-            <FlatButton label="Send" primary={true} onClick={this.sendImage.bind(this)} />
-            </CardActions>
-          </Card>
-            
-            {this.state.loading ? <LinearProgress mode="indeterminate" /> : null}
-            
+        <div>
+          <div class='flex-container'>
+            <Card>
+              <CardMedia class='image-container'>
+                <img src={this.state.preview} alt=""/>
+              </CardMedia>
+              <CardTitle title={this.state.prediction}/>
+              <CardActions>
+                <FlatButton
+                  style={styles.uploadButton}
+                  primary={true}
+                  label="Choose an Image"
+                  containerElement="label">
+                    <input style={styles.exampleImageInput}  type="file" accept="image/*" onChange={this.selectImage.bind(this)} />
+                </FlatButton>
+                <FlatButton label="Send" primary={true} onClick={this.sendImage.bind(this)} />
+              </CardActions>
+              {this.state.loading ? <LinearProgress mode="indeterminate" /> : null}
+            </Card>
           </div>
+          <Snackbar
+            open={this.state.snackbar}
+            message='Bad image'
+            autoHideDuration={4000}
+            onRequestClose={this.closeSnackbar.bind(this)}/>
+        </div>
       </MuiThemeProvider>
     );
   }
