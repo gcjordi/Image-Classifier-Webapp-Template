@@ -1,6 +1,5 @@
 - Python Setup
-`pip install -r requirements.txt`
-`conda install pytorch torchvision -c pytorch`
+`pip install -r requirements.txt` & `conda install pytorch torchvision -c pytorch`
 
 - To build frontend: 
 `npm run-script build`
