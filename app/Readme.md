@@ -1,7 +1,7 @@
-- Python Setup
+- Python Setup (from app folder):
 `pip install -r requirements.txt` & `conda install pytorch torchvision -c pytorch`
 
-- To build frontend: 
+- To build frontend (from app folder): 
 `npm run-script build`
 
 - To run frontend (from build folder): 
