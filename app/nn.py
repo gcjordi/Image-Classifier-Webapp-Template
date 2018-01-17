@@ -21,7 +21,8 @@ def process_image(image):
 
     model = models.resnet18(pretrained=True, num_classes=1000).eval()
 
-    preds = nn.LogSoftmax()(model(image)).data.cpu().numpy()
+    softmax = nn.LogSoftmax(1)
+    preds = softmax(model(image)).data.cpu().numpy()
     res = np.argmax(preds)
 
     with open('classes.pkl', 'rb') as f:

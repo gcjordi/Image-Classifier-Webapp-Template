@@ -7,10 +7,10 @@ import LinearProgress from 'material-ui/LinearProgress';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const styles = {
-  uploadButton: {
+  buttonwrapper: {
     verticalAlign: 'middle',
   },
-  exampleImageInput: {
+  imageinput: {
     cursor: 'pointer',
     position: 'absolute',
     top: 0,
@@ -30,8 +30,8 @@ class App extends Component {
         loading:false,
         snackbar:false,
         image:null,
-        prediction:'Upload an image to see what it holds',
-        preview:null,
+        prediction:'Select an image to see what it holds',
+        preview:'nn.png',
       }
     }
   
@@ -39,36 +39,33 @@ class App extends Component {
       let t = this;
       var reader = new FileReader();
       reader.readAsDataURL(id.target.files[0]);
-      // var yoyoimage = id.target.files[0];
-      // var yoyoname = yoyoimage.name;
+      // var image = id.target.files[0];
+      // var name = image.name;
       reader.onload = function(el) {
           var imagedata = el.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
-          t.setState({image:imagedata,
-                      preview: el.target.result})
+          t.setState({prediction:'Analyzing...',
+                      preview: el.target.result,
+                      loading:true})
+          fetch("http://127.0.0.1:8000",
+                {method: 'POST',
+                 body: JSON.stringify({ image: imagedata }),
+                }).then(function(resp){
+
+                if(resp.status === 200)
+                  {return resp.json()}
+                else
+                  t.setState({loading: false,
+                              snackbar: true,
+                              prediction: 'Please select another image'})
+                }).then((body)=>{
+                  t.setState({prediction: body.resp_data,
+                              loading: false})
+                })
       }
     }
 
   closeSnackbar(){
     this.setState({snackbar:false})
-  }
-
-  sendImage(){
-    this.setState({loading:true})
-    let t = this;
-    fetch("http://127.0.0.1:8000",
-      {method: 'POST',
-       body: JSON.stringify({ image: t.state.image }),
-      }).then(function(resp){
-
-        if(resp.status === 200)
-          {return resp.json()}
-        else
-          t.setState({loading: false,
-                      snackbar: true,})
-      }).then((body)=>{
-        t.setState({prediction: body.resp_data,
-                    loading: false})
-      })
   }
 
   render() {
@@ -83,13 +80,12 @@ class App extends Component {
               <CardTitle title={this.state.prediction}/>
               <CardActions>
                 <FlatButton
-                  style={styles.uploadButton}
+                  style={styles.buttonwrapper}
                   primary={true}
                   label="Choose an Image"
                   containerElement="label">
-                    <input style={styles.exampleImageInput}  type="file" accept="image/*" onChange={this.selectImage.bind(this)} />
+                    <input style={styles.imageinput} type="file" accept="image/*" onChange={this.selectImage.bind(this)} />
                 </FlatButton>
-                <FlatButton label="Send" primary={true} onClick={this.sendImage.bind(this)} />
               </CardActions>
               {this.state.loading ? <LinearProgress mode="indeterminate" /> : null}
             </Card>
