@@ -41,12 +41,13 @@ class App extends Component {
       reader.readAsDataURL(id.target.files[0]);
       // var image = id.target.files[0];
       // var name = image.name;
+
       reader.onload = function(el) {
           var imagedata = el.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
           t.setState({prediction:'Analyzing...',
                       preview: el.target.result,
                       loading:true})
-          fetch("http://127.0.0.1:8000",
+          fetch("http://classifierapi.apps.sdhnshu.com",
                 {method: 'POST',
                  body: JSON.stringify({ image: imagedata }),
                 }).then(function(resp){
@@ -57,9 +58,13 @@ class App extends Component {
                   t.setState({loading: false,
                               snackbar: true,
                               prediction: 'Please select another image'})
+                }).catch(function(error) {
+                  console.log(error);
                 }).then((body)=>{
                   t.setState({prediction: body.resp_data,
                               loading: false})
+                }).catch(function(error) {
+                  console.log(error);
                 })
       }
     }

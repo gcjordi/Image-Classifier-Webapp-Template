@@ -15,6 +15,7 @@ class Images(object):
 
     def on_post(self, req, resp):
         try:
+            print(req.content_length)
             if req.content_length:
                 data = json.load(req.stream)
                 evaluation = process_image(data['image'])
