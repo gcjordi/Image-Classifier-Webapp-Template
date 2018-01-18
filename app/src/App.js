@@ -63,6 +63,8 @@ class App extends Component {
                               snackbar: true,
                               prediction: 'Please select another image'})
                   console.log(t.state)
+                }).catch(function(error) {
+                    console.log(error);
                 }).then((body)=>{
                   console.log('second then')
                   console.log(t.state)
