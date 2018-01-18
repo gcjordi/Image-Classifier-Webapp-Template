@@ -14,9 +14,12 @@ class Images(object):
     cors = public_cors
 
     def on_post(self, req, resp):
+        print('request!!!')
         try:
+            print(req.content_length)
             if req.content_length:
                 data = json.load(req.stream)
+                print('data', data)
                 evaluation = process_image(data['image'])
             resp.body = json.dumps({'resp_data': evaluation})
             resp.status = falcon.HTTP_200

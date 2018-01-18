@@ -41,8 +41,10 @@ class App extends Component {
       reader.readAsDataURL(id.target.files[0]);
       // var image = id.target.files[0];
       // var name = image.name;
+      console.log('select image triggered')
       reader.onload = function(el) {
           var imagedata = el.target.result.replace(/^data:image\/(png|jpg|jpeg);base64,/, "");
+          console.log('image read: ', imagedata)
           t.setState({prediction:'Analyzing...',
                       preview: el.target.result,
                       loading:true})
@@ -50,21 +52,29 @@ class App extends Component {
                 {method: 'POST',
                  body: JSON.stringify({ image: imagedata }),
                 }).then(function(resp){
-
+                  console.log('first then')
+                  console.log(t.state)
                 if(resp.status === 200)
                   {return resp.json()}
                 else
+                  console.log('else')
+                  console.log(t.state)
                   t.setState({loading: false,
                               snackbar: true,
                               prediction: 'Please select another image'})
+                  console.log(t.state)
                 }).then((body)=>{
+                  console.log('second then')
+                  console.log(t.state)
                   t.setState({prediction: body.resp_data,
                               loading: false})
+                  console.log(t.state)
                 })
       }
     }
 
   closeSnackbar(){
+    console.log('close Snackbar')
     this.setState({snackbar:false})
   }
 
