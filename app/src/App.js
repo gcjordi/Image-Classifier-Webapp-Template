@@ -71,6 +71,8 @@ class App extends Component {
                   t.setState({prediction: body.resp_data,
                               loading: false})
                   console.log(t.state)
+                }).catch(function(error) {
+                    console.log(error);
                 })
       }
     }
