@@ -48,7 +48,7 @@ class App extends Component {
           t.setState({prediction:'Analyzing...',
                       preview: el.target.result,
                       loading:true})
-          fetch("http://127.0.0.1:8000",
+          fetch("http://box.sdhnshu.com:8000",
                 {method: 'POST',
                  body: JSON.stringify({ image: imagedata }),
                 }).then(function(resp){

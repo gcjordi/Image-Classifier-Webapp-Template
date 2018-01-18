@@ -28,4 +28,5 @@ class Images(object):
             print(str(e))
 
 
+print('Script running!!!')
 app.add_route('/', Images())
