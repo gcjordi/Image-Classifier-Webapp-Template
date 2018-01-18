@@ -5,7 +5,7 @@
 `npm run-script build`
 
 - To run frontend (from build folder): 
-`python -m http.server -b 127.0.0.1 5000`
+`python -m http.server -b 127.0.0.1 3000`
 
 - To run backend (from src folder):
 `gunicorn run:app`
