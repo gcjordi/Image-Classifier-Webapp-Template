@@ -36,7 +36,6 @@
 }
 .image-container {
   min-height: 20vh;
-  width: 40vw;
 }
 .image-container img {
   max-height:100%;
