@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import {Card, CardActions, CardMedia, CardTitle} from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
 import Snackbar from 'material-ui/Snackbar';
 import LinearProgress from 'material-ui/LinearProgress';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const styles = {
-  buttonwrapper: {
-    verticalAlign: 'middle',
-  },
   imageinput: {
     cursor: 'pointer',
     position: 'absolute',
@@ -84,13 +81,13 @@ class App extends Component {
               </CardMedia>
               <CardTitle title={this.state.prediction}/>
               <CardActions>
-                <FlatButton
-                  style={styles.buttonwrapper}
+                <RaisedButton
+                  class='button'
                   primary={true}
                   label="Choose an Image"
                   containerElement="label">
                     <input style={styles.imageinput} type="file" accept="image/*" onChange={this.selectImage.bind(this)} />
-                </FlatButton>
+                </RaisedButton>
               </CardActions>
               {this.state.loading ? <LinearProgress mode="indeterminate" /> : null}
             </Card>
