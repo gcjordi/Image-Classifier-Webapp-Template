@@ -11,11 +11,12 @@ from io import BytesIO
 def process_image(model, b64img):
 
     # image = Image.open()
-    imgByteArr = BytesIO(b64decode(b64img))
-    roiImg.save(imgByteArr, format='PNG')
-    imgByteArr = imgByteArr.getvalue()
+    # imgByteArr = BytesIO(b64decode(b64img))
+    # roiImg.save(imgByteArr, format='PNG')
+    # imgByteArr = imgByteArr.getvalue()
     # print(BytesIO(b64decode(b64img)))
-    print(Image.frombytes('RGB', (224,224), b64img, 'PNG'))
+    print(Image.open(BytesIO(b64img)))
+    # print(Image.frombytes('RGB', (224, 224), b64img, 'PNG'))
 
     # trans = transforms.Compose([
     #     transforms.Resize(224),
