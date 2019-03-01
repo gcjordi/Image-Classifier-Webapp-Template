@@ -7,7 +7,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import $ from 'jquery';
 
-let APP_URL = 'http://127.0.0.1:8000/identify'
+let APP_URL = 'https://img-classifier.herokuapp.com/identify'
 
 const styles = {
   imageinput: {
