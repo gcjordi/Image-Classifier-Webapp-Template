@@ -35,4 +35,4 @@ class Index(object):
 
 app.add_route('/identify', Images())
 app.add_route('/', Index())
-app.add_static_route('/static', os.path.abspath("../frontend/build"))
+app.add_static_route('/static', os.path.abspath("./frontend/build"))
