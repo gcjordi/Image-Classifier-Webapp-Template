@@ -1,0 +1,5 @@
+falcon==1.4.1
+falcon-multipart==0.2.0
+gunicorn==19.9.0
+torch==1.0.1
+torchvision==0.2.2
