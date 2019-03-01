@@ -6,7 +6,7 @@
 
 ### Requirements
 - node v10.15.2
-- python v3.7.2
+- python v3.6.8
 
 ### Commands
 - npm start (Dev)
