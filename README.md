@@ -1,4 +1,4 @@
-# Visual Recognition
+# Visual Recognition webapp template
 
 ## This basic web application has two parts:
 - A react app that sends an image to the python api
